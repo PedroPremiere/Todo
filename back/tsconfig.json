@@ -16,6 +16,28 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+        "@test/*": [
+            "test/*"
+        ],
+        "@/*": [
+            "src/*"
+        ]
+    }
+  },
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true,
+    "compilerOptions": {
+    "paths": {
+        "@test/*": [
+            "test/*"
+        ],
+        "@/*": [
+            "src/*"
+        ]
+        }
+    }
   }
 }
