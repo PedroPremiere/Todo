@@ -1,0 +1,16 @@
+datasource database {
+  provider          = "mysql"
+  url               = "mysql://root:root@127.0.0.1:3306/demodb?schema=public"
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["clientExtensions"]
+}
+
+model todo {
+  id      Int     @id @unique
+  done    Boolean @default(false)
+  content String
+}
