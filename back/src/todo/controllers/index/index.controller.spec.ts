@@ -1,18 +1,32 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { IndexController } from './index.controller';
+/*
+ * @group index
+ * @group controller
+ * @group indexController
+ */
+
+import { TodoFactory } from '@/todo/factories/toto-factory';
+
+import { get } from '@test/methods/get';
+
+const url = `/todos`;
+
+const todos = [];
+const wantedToDos = 5;
 
 describe('IndexController', () => {
-  let controller: IndexController;
+    beforeAll(async () => {
+        for (let i = 0; i < wantedToDos; i++) {
+            todos.push(await TodoFactory.create());
+        }
+    });
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      controllers: [IndexController],
-    }).compile();
+    it('Returns List of items', async () => {
+        const { status, body } = await get({ url });
 
-    controller = module.get<IndexController>(IndexController);
-  });
+        expect(status).toBe(200);
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
+        expect(body.length).toBe(wantedToDos);
+
+        expect(body).toEqual(todos);
+    });
 });
