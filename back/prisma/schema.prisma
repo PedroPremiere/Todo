@@ -1,6 +1,6 @@
 datasource database {
   provider          = "mysql"
-  url               = "mysql://root:root@127.0.0.1:3306/demodb?schema=public"
+  url               = "mysql://root:root@127.0.0.1:3306/demodb"
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
@@ -10,7 +10,7 @@ generator client {
 }
 
 model todo {
-  id      Int     @id @unique
+  id      Int     @id @unique @default(autoincrement())
   done    Boolean @default(false)
   content String
 }
