@@ -9,6 +9,10 @@ generator client {
   previewFeatures = ["clientExtensions"]
 }
 
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
 model todo {
   id      Int     @id @unique @default(autoincrement())
   done    Boolean @default(false)

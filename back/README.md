@@ -1,51 +1,166 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Before start
+
+Make sure you have software mentioned below on your computer:
+
+* ***NPM*** and ***NODE JS***
+  https://nodejs.org/en/download/
+* ***Docker***
+  https://www.docker.com/products/docker-desktop
+
 
 ## Installation
 
-```bash
-$ npm install
+From terminal
+
+```shell
+#install dependencies
+npm install
+
+# copy file and set proper data inside
+cp .env.example .env
+
+cp .env.example .env.test
+
+#docker setup
+docker-compose up -d 
 ```
+
+
+## Documentation
+
+### Backend code docs
+
+To see project documentation run
+
+```shell
+npm run docs
+```
+
+and open
+
+[http://127.0.0.1:8080](http://127.0.0.1:8080) in browser
+
+
+### Swagger 
+
+To see Swagger(OpenApi):
+
+```shell
+  npm run dev
+```
+
+And open
+[http://localhost:3000/docs#/](http://localhost:3000/docs#/)
+
+
+
+### Database docs
+
+#### Docs
+
+```shell
+npm run docs:db
+#or 
+npx prisma-docs-generator serve
+```
+
+It uses random port - see terminal
+
+#### ERD of database
+
+ERD graph of database is in : ```prisma/ERD.png```
 
 ## Running the app
 
 ```bash
 # development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
+$ npm run dev
 
 # production mode
-$ npm run start:prod
+$ npm run prod
+```
+
+Open [http://localhost:3000](http://localhost:3000) in browser
+
+
+## Migrations and Seeders
+
+### Migrations
+
+You don't have to write migrations by yourself - the only thing you have to do is to write schemix-models. Models are in
+dir : ```prisma/models```, and are normal Typescript files.
+
+Steps:
+
+- you write models in typescript (not Prisma language)
+- create prisma file (prisma/schema.prisma) with migrations according to model
+
+```shell
+# Create new migration (it creates new prisma/schema.prisma)
+npm run make:migration 
+```
+
+//todo - fix it somehow - it makes docs for database
+
+- open ```prisma/schema.prisma```, and on top of file add line :
+
+```
+# it can be missing
+generator docs {
+  provider = "node node_modules/prisma-docs-generator"
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+  output = "../prisma/ERD.png"
+}
+
+```
+
+- create new sql migrations according
+
+```shell
+# Run Migration for Development:
+npm run migrate:dev
+#or 
+npx prisma migrate dev
+
+```
+
+- prisma creates SQL files with migrations, they are sql files, in ```prisma/migrations/```
+
+Look [schemix](https://github.com/ridafkih/schemix) to learn more.
+
+- refresh ORM (types, docs, ide support )
+
+```shell
+ npx prisma generate
+```
+
+### Seeders
+
+```shell
+npm run seed
+```
+
+Seeders are in
+
+```shell
+# Factories
+src/apps/Model_name/factories
+
+# main seed file
+src/db/seeds
 ```
 
 ## Test
+
+```shell
+# Before first run
+docker-compose --env-file .env.test  up -d
+```
 
 ```bash
 # unit tests
@@ -58,16 +173,4 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
