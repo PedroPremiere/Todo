@@ -1,27 +1,24 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { TodoTdo } from '@/todo/dto/todoTdo';
+
 import { PrismaService } from '@/prisma/prisma.service';
 
 @Injectable()
-export class EditService {
+export class ShowService {
     constructor(private readonly prismaService: PrismaService) {}
 
-    async edit(data: TodoTdo): Promise<TodoTdo> {
-        if (!data || !data.id) {
+    async findOne(id: number) {
+        if (!id) {
             throw new NotFoundException();
         }
 
         const item = await this.prismaService.todo.findFirst({
-            where: { id: data.id }
+            where: { id }
         });
 
         if (!item) {
             throw new NotFoundException();
         }
 
-        return this.prismaService.todo.update({
-            data: data,
-            where: { id: data.id }
-        });
+        return item;
     }
 }

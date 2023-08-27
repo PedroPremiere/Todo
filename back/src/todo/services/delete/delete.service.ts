@@ -6,6 +6,10 @@ export class DeleteService {
     constructor(private readonly prismaService: PrismaService) {}
 
     async delete(id: number) {
+        if (!id) {
+            throw new NotFoundException();
+        }
+
         const item = await this.prismaService.todo.findFirst({ where: { id } });
 
         if (!item) {
