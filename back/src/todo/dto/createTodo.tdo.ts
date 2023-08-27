@@ -9,7 +9,7 @@ export class CreateTodoTdo {
 
     @IsBoolean()
     @Transform(({ obj }) => {
-        return obj.done === 'true';
+        return [true, 'true', 1].includes(obj.done);
     })
     done: boolean = false;
 }
