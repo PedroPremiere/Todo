@@ -42,4 +42,15 @@ describe('DeleteController', () => {
         expect(status).toBe(404);
         expect(body).toEqual({ message: 'Not Found', statusCode: 404 });
     });
+
+    it('Returns NO FOUND when non existing ID', async () => {
+        const fakeId = faker.animal.bird();
+
+        const { status, body } = await remove({
+            url: `${url}/${fakeId}`
+        });
+
+        expect(status).toBe(404);
+        expect(body).toEqual({ message: 'Not Found', statusCode: 404 });
+    });
 });

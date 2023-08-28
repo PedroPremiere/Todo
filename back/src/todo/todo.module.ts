@@ -7,9 +7,11 @@ import { DeleteController } from './controllers/delete/delete.controller';
 import { DeleteService } from './services/delete/delete.service';
 import { EditController } from './controllers/edit/edit.controller';
 import { EditService } from './services/edit/edit.service';
+import { ShowController } from './controllers/show/show.controller';
+import { ShowService } from './services/show/show.service';
 
 @Module({
-    controllers: [IndexController, CreateController, DeleteController, EditController],
-    providers: [IndexService, CreateService, DeleteService, EditService]
+    controllers: [IndexController, CreateController, DeleteController, EditController, ShowController],
+    providers: [IndexService, CreateService, DeleteService, EditService, ShowService]
 })
 export class TodoModule {}

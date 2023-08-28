@@ -51,6 +51,19 @@ describe('EditController', () => {
         expect(body).toEqual({ message: 'Not Found', statusCode: 404 });
     });
 
+    it('Returns NO FOUND when non existing ID', async () => {
+        const fakeId = faker.animal.bird();
+        const payload = TodoFactory.generate();
+
+        const { status, body } = await edit({
+            url: `${url}/${fakeId}`,
+            payload
+        });
+
+        expect(status).toBe(404);
+        expect(body).toEqual({ message: 'Not Found', statusCode: 404 });
+    });
+
     it('Returns BAD REQUEST when EMPTY DATA', async () => {
         const { status, body } = await edit({
             url: `${url}/${itemToDelete.id}`
